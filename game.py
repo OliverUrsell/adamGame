@@ -64,7 +64,7 @@ def play_game(number_of_players: int, starting_chips: int = 5, log=True):
             old_player = player
             player = _next_player(player, players)
             players.pop(old_player.id)
-            print(f"has just been eliminated")
+            print(f"has just been eliminated") if log else ...
             continue
 
         rolls = [_roll_dice()]
