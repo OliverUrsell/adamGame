@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import List
 from enum import Enum
 from random import randint
 
@@ -33,28 +33,24 @@ def _roll_dice() -> _Roll:
         return _Roll.CENTER
 
 
-def _next_player(current_player: _Player, players: Dict[int, _Player]) -> _Player:
-    id_list = list(players)
-    new_index = id_list.index(current_player.id) + 1
-    if new_index >= len(id_list):
+def _next_player(current_player: _Player, players: List[_Player]) -> _Player:
+    new_index = players.index(current_player) + 1
+    if new_index >= len(players):
         new_index = 0
-    new_id = id_list[new_index]
-    return players[new_id]
+    return players[new_index]
 
 
-def _previous_player(current_player: _Player, players: Dict[int, _Player]):
-    id_list = list(players)
-    new_index = id_list.index(current_player.id) - 1
+def _previous_player(current_player: _Player, players: List[_Player]):
+    new_index = players.index(current_player) - 1
     if new_index < 0:
-        new_index = len(id_list) - 1
-    new_id = id_list[new_index]
-    return players[new_id]
+        new_index = len(players) - 1
+    return players[new_index]
 
 
 def play_game(number_of_players: int, starting_chips: int = 5, log=True):
-    players: Dict[int, _Player] = {
-        player_id: _Player(player_id, starting_chips) for player_id in range(number_of_players)
-    }
+    players: List[_Player] = [
+        _Player(player_id, starting_chips) for player_id in range(number_of_players)
+    ]
 
     player = players[0]
     while len(players) > 1:
@@ -63,7 +59,7 @@ def play_game(number_of_players: int, starting_chips: int = 5, log=True):
         if player.chips == 0:
             old_player = player
             player = _next_player(player, players)
-            players.pop(old_player.id)
+            players.remove(old_player)
             print(f"has just been eliminated") if log else ...
             continue
 
@@ -89,7 +85,7 @@ def play_game(number_of_players: int, starting_chips: int = 5, log=True):
 
         player = _next_player(player, players)
 
-    winning_player = players[list(players)[0]]
+    winning_player = players[0]
     print(f"This winner was player {winning_player.id}") if log else ...
 
 
