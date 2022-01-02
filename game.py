@@ -52,6 +52,8 @@ def play_game(number_of_players: int, starting_chips: int = 5, log=True):
         _Player(player_id, starting_chips) for player_id in range(number_of_players)
     ]
 
+    elimination_order = []
+
     player = players[0]
     while len(players) > 1:
         print(f"Player {player.id}") if log else ...
@@ -60,6 +62,7 @@ def play_game(number_of_players: int, starting_chips: int = 5, log=True):
             old_player = player
             player = _next_player(player, players)
             players.remove(old_player)
+            elimination_order.append(old_player.id)
             print(f"has just been eliminated") if log else ...
             continue
 
@@ -86,7 +89,11 @@ def play_game(number_of_players: int, starting_chips: int = 5, log=True):
         player = _next_player(player, players)
 
     winning_player = players[0]
+    elimination_order.append(winning_player.id)
+    print(f"The elimination order was: {elimination_order}") if log else ...
     print(f"This winner was player {winning_player.id}") if log else ...
+
+    return winning_player.id, elimination_order
 
 
 if __name__ == '__main__':
