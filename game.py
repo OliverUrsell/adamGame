@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 from enum import Enum
 from random import randint
 
@@ -47,7 +47,18 @@ def _previous_player(current_player: _Player, players: List[_Player]):
     return players[new_index]
 
 
-def play_game(number_of_players: int, starting_chips: int = 5, log=True):
+def play_game(number_of_players: int, starting_chips: int = 5, log=False) -> Tuple[int, List[int]]:
+    """
+    Play the luck game (See README.md)
+
+    Players are identified by id. Player 2 is to the right of player 1 and player `number_of_players` to the left of
+    player 1
+
+    :param number_of_players: The number of players that are in the game
+    :param starting_chips: The number of chips each player starts with
+    :param log: Whether to print the events of the game to stdout
+    :return: (winning player, elimination order) as integer ids - The last id in the elimination order is the winner
+    """
     players: List[_Player] = [
         _Player(player_id, starting_chips) for player_id in range(number_of_players)
     ]
@@ -98,4 +109,4 @@ def play_game(number_of_players: int, starting_chips: int = 5, log=True):
 
 if __name__ == '__main__':
     num_players = int(input("Number of Players: "))
-    play_game(num_players)
+    play_game(num_players, log=True)
