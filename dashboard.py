@@ -7,27 +7,55 @@ from dash import html
 import plotly.express as px
 import pandas as pd
 
+from game import play_multiple_games
+
 app = dash.Dash(__name__)
+app.css.append_css({'external_url': '/assets/dashboard.css'})
+app.server.static_folder = 'external_stylesheets'
+
+colors = {
+    'background': '#3B313C',
+    'text': '#F2EFF2',
+}
+
+textSize = 64
+
+winners = play_multiple_games(10)
 
 # assume you have a "long-form" data frame
 # see https://plotly.com/python/px-arguments/ for more options
 df = pd.DataFrame({
-    "Fruit": ["Apples", "Oranges", "Bananas", "Apples", "Oranges", "Bananas"],
-    "Amount": [4, 1, 2, 2, 4, 5],
-    "City": ["SF", "SF", "SF", "Montreal", "Montreal", "Montreal"]
+    "Players": [f"Player {x+1}" for x in range(len(winners))],
+    "Wins": winners
 })
 
-fig = px.bar(df, x="Fruit", y="Amount", color="City", barmode="group")
+fig = px.bar(df, x="Players", y="Wins")
 
-app.layout = html.Div(children=[
-    html.H1(children='Hello Dash'),
+fig.update_layout(
+    plot_bgcolor=colors['background'],
+    paper_bgcolor=colors['background'],
+    font_color=colors['text'],
+    font_size=32
+)
 
-    html.Div(children='''
-        Dash: A web application framework for your data.
-    '''),
+app.layout = html.Div(style={'backgroundColor': colors['background']}, children=[
+    html.H1(
+        children='Luck Game Thing',
+        style={
+            'textAlign': 'center',
+            'color': colors['text'],
+            'fontSize': textSize
+        }
+    ),
+
+    html.Div(children='Adam what is the name for this lol?', style={
+        'textAlign': 'center',
+        'color': colors['text'],
+        'fontSize': textSize
+    }),
 
     dcc.Graph(
-        id='example-graph',
+        id='example-graph-2',
         figure=fig
     )
 ])
