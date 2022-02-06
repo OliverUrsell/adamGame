@@ -108,6 +108,18 @@ def play_game(number_of_players: int, starting_chips: int = 5, log=False) -> Tup
 
     return winning_player.human_id, elimination_order
 
+def play_multiple_games(number_of_players: int, number_of_games: int=100000) -> List[int]:
+    """
+    Plays multiple games
+    :param number_of_games:
+    :return: an array where each position is the number of times that player has won
+    """
+    output = [0]*number_of_players
+    for game in range(number_of_games):
+        winner, _ = play_game(number_of_players)
+        output[winner-1] += 1
+    return output
+
 
 if __name__ == '__main__':
     num_players = int(input("Number of Players: "))
