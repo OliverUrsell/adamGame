@@ -14,10 +14,12 @@ class _Roll(Enum):
 
 class _Player:
     id: int
+    human_id: int
     chips: int
 
     def __init__(self, player_id, chips):
         self.id = player_id
+        self.human_id = player_id + 1
         self.chips = chips
 
 
@@ -67,13 +69,13 @@ def play_game(number_of_players: int, starting_chips: int = 5, log=False) -> Tup
 
     player = players[0]
     while len(players) > 1:
-        print(f"Player {player.id}") if log else ...
+        print(f"Player {player.human_id}") if log else ...
 
         if player.chips == 0:
             old_player = player
             player = _next_player(player, players)
             players.remove(old_player)
-            elimination_order.append(old_player.id)
+            elimination_order.append(old_player.human_id)
             print(f"has just been eliminated") if log else ...
             continue
 
@@ -100,11 +102,11 @@ def play_game(number_of_players: int, starting_chips: int = 5, log=False) -> Tup
         player = _next_player(player, players)
 
     winning_player = players[0]
-    elimination_order.append(winning_player.id)
+    elimination_order.append(winning_player.human_id)
     print(f"The elimination order was: {elimination_order}") if log else ...
-    print(f"This winner was player {winning_player.id}") if log else ...
+    print(f"This winner was player {winning_player.human_id}") if log else ...
 
-    return winning_player.id, elimination_order
+    return winning_player.human_id, elimination_order
 
 
 if __name__ == '__main__':
